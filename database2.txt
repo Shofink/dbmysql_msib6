@@ -1,0 +1,340 @@
+//soal 3.1 //
+SELECT * FROM produk WHERE harga_beli * stok > 20000000;
++----+-------+------------------+------------+------------+------+----------+------------------------+-----------+-----------------+
+| id | kode  | nama             | harga_beli | harga_jual | stok | min_stok | foto                   | deskripsi | jenis_produk_id |
++----+-------+------------------+------------+------------+------+----------+------------------------+-----------+-----------------+
+|  2 | TV02  | Televisi 40 inch |    5500000 |    7440000 |    4 |        2 | NULL                   | NULL      |               1 |
+|  3 | K001  | Kulkas 2 pintu   |    3500000 |    4680000 |    6 |        2 |                        | NULL      |               1 |
+|  6 | PC01  | PC Desktop HP    |    7000000 |    9984000 |    9 |        2 | NULL                   | NULL      |               5 |
+|  8 | AC01  | Notebook Acer S  |    8000000 |   11232000 |    7 |        2 | NULL                   | NULL      |               5 |
+|  9 | LN01  | Notebook Lenovo  |    9000000 |   12480000 |    9 |        2 | NULL                   | NULL      |               5 |
+| 11 | L005  | Laptop Lenovo    |   13000000 |   16000000 |    5 |        2 |                        | NULL      |               1 |
+| 18 | L0015 | Laptop Asus      |    3000000 |    5000000 |   10 |       20 | foto-65542ffa66604.jpg | NULL      |               1 |
++----+-------+------------------+------------+------------+------+----------+------------------------+-----------+-----------------+
+7 rows in set (0.059 sec)
+
+MariaDB [db_posmsib6]> SELECT SUM(stok - min_stok) as selisih from produk;
++---------+
+| selisih |
++---------+
+|      91 |
++---------+
+1 row in set (0.057 sec)
+
+MariaDB [db_posmsib6]> SELECT sum(stok) as total_asset from produk;
++-------------+
+| total_asset |
++-------------+
+|         193 |
++-------------+
+1 row in set (0.001 sec)
+
+MariaDB [db_posmsib6]> SELECT * FROM pelanggan WHERE YEAR(tgl_lahir) BET
+WEEN 1999 AND 2004;
+Empty set (0.063 sec)
+
+MariaDB [db_posmsib6]> SELECT * FROM pelanggan WHERE YEAR(tgl_lahir)=1998;
+Empty set (0.001 sec)
+
+MariaDB [db_posmsib6]> SELECT * FROM pelanggan WHERE MONTH(tgl_lahir)=08;
+Empty set (0.002 sec)
+
+MariaDB [db_posmsib6]> SELECT nama, tmp_lahir, tgl_lahir, (YEAR(NOW())-YEAR(tgl_lahir)) AS umur FROM pelanggan;
++--------------------+------------+------------+------+
+| nama               | tmp_lahir  | tgl_lahir  | umur |
++--------------------+------------+------------+------+
+| Agung Sedayu Group | Solo       | 2010-01-01 |   14 |
+| Pandan Wangi       | Yogyakarta | 1950-01-01 |   74 |
+| Sekar Mirah        | Kediri     | 1983-02-20 |   41 |
+| Swandaru Geni      | Kediri     | 1981-01-04 |   43 |
+| Pradabashu         | Pati       | 1985-04-02 |   39 |
+| Gayatri Dwi        | Jakarta    | 1987-11-28 |   37 |
+| Dewi Gyat          | Jakarta    | 1988-12-01 |   36 |
+| Andre Haru         | Surabaya   | 1990-07-15 |   34 |
+| Ahmad Hasan        | Surabaya   | 1992-10-15 |   32 |
+| Cassanndra         | Belfast    | 1990-11-20 |   34 |
+| Andi Wijaya        | Tangerang  | 2023-11-07 |    1 |
+| Ira                | Jakarta    | 2023-11-07 |    1 |
++--------------------+------------+------------+------+
+12 rows in set (0.003 sec)
+
+//soal 3.2//
+MariaDB [db_posmsib6]> SELECT COUNT(*) AS jumlah_pelanggan FROM pelanggan WHERE YEAR(tgl_lahir)=1998;
++------------------+
+| jumlah_pelanggan |
++------------------+
+|                0 |
++------------------+
+1 row in set (0.009 sec)
+
+MariaDB [db_posmsib6]> SELECT COUNT(*) AS jumlah_pelanggan_pr FROM pelanggan WHERE tmp_lahir = 'Jakarta';
++---------------------+
+| jumlah_pelanggan_pr |
++---------------------+
+|                   3 |
++---------------------+
+1 row in set (0.001 sec)
+
+MariaDB [db_posmsib6]> SELECT COUNT(*) AS jumlah_produk FROM produk WHERE harga_jual < 1000000;
++---------------+
+| jumlah_produk |
++---------------+
+|             7 |
++---------------+
+1 row in set (0.001 sec)
+
+MariaDB [db_posmsib6]> SELECT COUNT(*) AS jumlah_produk FROM produk WHER
+E kode like 'K%';
++---------------+
+| jumlah_produk |
++---------------+
+|             1 |
++---------------+
+1 row in set (0.010 sec)
+
+MariaDB [db_posmsib6]> select avg(harga_jual) as harga_rata2 from produk where harga_jual > 1000000;
++--------------------+
+| harga_rata2        |
++--------------------+
+| 31387733.333333332 |
++--------------------+
+1 row in set (0.055 sec)
+
+MariaDB [db_posmsib6]> select * from produk order by stok desc limit 1;
++----+------+-----------+------------+------------+------+----------+------------+-----------+-----------------+
+| id | kode | nama      | harga_beli | harga_jual | stok | min_stok | foto       | deskripsi | jenis_produk_id |
++----+------+-----------+------------+------------+------+----------+------------+-----------+-----------------+
+|  7 | TB01 | Teh Botol |       2000 |       2500 |   53 |       10 | foto-7.jpg | NULL      |               4 |
++----+------+-----------+------------+------------+------+----------+------------+-----------+-----------------+
+1 row in set (0.002 sec)
+
+MariaDB [db_posmsib6]> select count(*) as jumlah_produk from produk wher
+e stok < min_stok;
++---------------+
+| jumlah_produk |
++---------------+
+|             4 |
++---------------+
+1 row in set (0.001 sec)
+
+MariaDB [db_posmsib6]>  SELECT sum(stok) as total_asset from produk;
++-------------+
+| total_asset |
++-------------+
+|         193 |
++-------------+
+1 row in set (0.001 sec)
+
+// soal 3.3 //
+MariaDB [db_posmsib6]> select id, nama, stok, min_stok,
+    -> case
+    -> when stok >= min_stok then 'stok aman'
+    -> else 'segera belanja'
+    -> end as keterangan
+    -> from produk;
++----+-------------------+------+----------+----------------+
+| id | nama              | stok | min_stok | keterangan     |
++----+-------------------+------+----------+----------------+
+|  1 | Televisi 21 inchs |    5 |        2 | stok aman      |
+|  2 | Televisi 40 inch  |    4 |        2 | stok aman      |
+|  3 | Kulkas 2 pintu    |    6 |        2 | stok aman      |
+|  4 | Meja Makan        |    4 |        3 | stok aman      |
+|  5 | Teh Kotak         |    6 |       10 | segera belanja |
+|  6 | PC Desktop HP     |    9 |        2 | stok aman      |
+|  7 | Teh Botol         |   53 |       10 | stok aman      |
+|  8 | Notebook Acer S   |    7 |        2 | stok aman      |
+|  9 | Notebook Lenovo   |    9 |        2 | stok aman      |
+| 11 | Laptop Lenovo     |    5 |        2 | stok aman      |
+| 15 | Kopi              |   10 |       15 | segera belanja |
+| 16 | Teh Sosro 2       |   10 |       12 | segera belanja |
+| 18 | Laptop Asus       |   10 |       20 | segera belanja |
+| 19 | Televisi 22 inc`  |    5 |        2 | stok aman      |
+| 20 | Televisi 23 inc   |    5 |        2 | stok aman      |
+| 21 | Televisi 24 inc   |    5 |        2 | stok aman      |
+| 22 | Televisi 25 inc   |    5 |        2 | stok aman      |
+| 24 | Televisi 27 inc   |    5 |        2 | stok aman      |
+| 25 | Televisi 28 inc   |    5 |        2 | stok aman      |
+| 26 | Televisi 29 inc   |    5 |        2 | stok aman      |
+| 27 | Teh Pucuk         |   10 |        2 | stok aman      |
+| 28 | Teh Pucuk2        |   10 |        2 | stok aman      |
++----+-------------------+------+----------+----------------+
+22 rows in set (0.002 sec)
+
+MariaDB [db_posmsib6]> select id, nama, (Year(now())-Year(tgl_lahir)) as Umur,
+    -> case
+    -> when (YEAR(NOW()) - YEAR(tgl_lahir)) < 17 then 'Muda'
+    -> when (YEAR(NOW()) - YEAR(tgl_lahir)) between 17 and 55 then 'Dewasa'
+    -> from pelanggan;
++----+--------------------+------+------------+
+| id | nama               | Umur | Keterangan |
++----+--------------------+------+------------+
+|  1 | Agung Sedayu Group |   14 | Muda       |
+|  2 | Pandan Wangi       |   74 | Tua        |
+|  3 | Sekar Mirah        |   41 | Dewasa     |
+|  4 | Swandaru Geni      |   43 | Dewasa     |
+|  5 | Pradabashu         |   39 | Dewasa     |
+|  6 | Gayatri Dwi        |   37 | Dewasa     |
+|  7 | Dewi Gyat          |   36 | Dewasa     |
+|  8 | Andre Haru         |   34 | Dewasa     |
+|  9 | Ahmad Hasan        |   32 | Dewasa     |
+| 10 | Cassanndra         |   34 | Dewasa     |
+| 11 | Andi Wijaya        |    1 | Muda       |
+| 12 | Ira                |    1 | Muda       |
++----+--------------------+------+------------+
+12 rows in set (0.058 sec)
+
+MariaDB [db_posmsib6]> select id, kode, nama,
+    -> case
+    -> when kode = 'TV01' then 'DVD Player'
+    -> when kode = 'K001' then 'Rice Cooker'
+    -> else 'Tidak ada'
+    -> end as Bonus
+    -> from produk;
++----+--------+-------------------+-------------+
+| id | kode   | nama              | Bonus       |
++----+--------+-------------------+-------------+
+|  1 | TV01   | Televisi 21 inchs | DVD Player  |
+|  2 | TV02   | Televisi 40 inch  | Tidak ada   |
+|  3 | K001   | Kulkas 2 pintu    | Rice Cooker |
+|  4 | M001   | Meja Makan        | Tidak ada   |
+|  5 | TK01   | Teh Kotak         | Tidak ada   |
+|  6 | PC01   | PC Desktop HP     | Tidak ada   |
+|  7 | TB01   | Teh Botol         | Tidak ada   |
+|  8 | AC01   | Notebook Acer S   | Tidak ada   |
+|  9 | LN01   | Notebook Lenovo   | Tidak ada   |
+| 11 | L005   | Laptop Lenovo     | Tidak ada   |
+| 15 | L112   | Kopi              | Tidak ada   |
+| 16 | L113   | Teh Sosro 2       | Tidak ada   |
+| 18 | L0015  | Laptop Asus       | Tidak ada   |
+| 19 | TV0115 | Televisi 22 inc`  | Tidak ada   |
+| 20 | TV0116 | Televisi 23 inc   | Tidak ada   |
+| 21 | TV0117 | Televisi 24 inc   | Tidak ada   |
+| 22 | TV0118 | Televisi 25 inc   | Tidak ada   |
+| 24 | TV0120 | Televisi 27 inc   | Tidak ada   |
+| 25 | TV0121 | Televisi 28 inc   | Tidak ada   |
+| 26 | TV0122 | Televisi 29 inc   | Tidak ada   |
+| 27 | THP001 | Teh Pucuk         | Tidak ada   |
+| 28 | THP002 | Teh Pucuk2        | Tidak ada   |
++----+--------+-------------------+-------------+
+22 rows in set (0.002 sec)
+
+// soal 3.4 //
+MariaDB [db_posmsib6]> select tmp_lahir, COUNT(*) AS jumlah_tmp_lahir
+    -> from pelanggan
+    -> group by tmp_lahir;
++------------+------------------+
+| tmp_lahir  | jumlah_tmp_lahir |
++------------+------------------+
+| Belfast    |                1 |
+| Jakarta    |                3 |
+| Kediri     |                2 |
+| Pati       |                1 |
+| Solo       |                1 |
+| Surabaya   |                2 |
+| Tangerang  |                1 |
+| Yogyakarta |                1 |
++------------+------------------+
+8 rows in set (0.063 sec)
+
+MariaDB [db_posmsib6]> select nama as jenis_produk, count(*) as jumlah_produk
+    -> from produk
+    -> group by nama;
++-------------------+---------------+
+| jenis_produk      | jumlah_produk |
++-------------------+---------------+
+| Kopi              |             1 |
+| Kulkas 2 pintu    |             1 |
+| Laptop Asus       |             1 |
+| Laptop Lenovo     |             1 |
+| Meja Makan        |             1 |
+| Notebook Acer S   |             1 |
+| Notebook Lenovo   |             1 |
+| PC Desktop HP     |             1 |
+| Teh Botol         |             1 |
+| Teh Kotak         |             1 |
+| Teh Pucuk         |             1 |
+| Teh Pucuk2        |             1 |
+| Teh Sosro 2       |             1 |
+| Televisi 21 inchs |             1 |
+| Televisi 22 inc`  |             1 |
+| Televisi 23 inc   |             1 |
+| Televisi 24 inc   |             1 |
+| Televisi 25 inc   |             1 |
+| Televisi 27 inc   |             1 |
+| Televisi 28 inc   |             1 |
+| Televisi 29 inc   |             1 |
+| Televisi 40 inch  |             1 |
++-------------------+---------------+
+22 rows in set (0.059 sec)
+
+MariaDB [db_posmsib6]> SELECT id, nama, (YEAR(NOW()) - YEAR(tgl_lahir)) AS umur
+    -> FROM pelanggan
+    -> WHERE (YEAR(NOW()) - YEAR(tgl_lahir)) < (SELECT AVG(YEAR(NOW()) - YEAR(tgl_lahir)) FROM pelanggan);
++----+--------------------+------+
+| id | nama               | umur |
++----+--------------------+------+
+|  1 | Agung Sedayu Group |   14 |
+|  9 | Ahmad Hasan        |   32 |
+| 11 | Andi Wijaya        |    1 |
+| 12 | Ira                |    1 |
++----+--------------------+------+
+4 rows in set (0.061 sec)
+
+MariaDB [db_posmsib6]> SELECT * from produk where harga_jual > (SELECT A
+VG(harga_jual) from produk);
++----+--------+-------------------+------------+------------+------+----------+------+-----------+-----------------+
+| id | kode   | nama              | harga_beli | harga_jual | stok | min_stok | foto | deskripsi | jenis_produk_id |
++----+--------+-------------------+------------+------------+------+----------+------+-----------+-----------------+
+|  1 | TV01   | Televisi 21 inchs |    3500000 |   50500000 |    5 |        2 |      | NULL      |               1 |
+| 19 | TV0115 | Televisi 22 inc`  |    3500000 |   50500000 |    5 |        2 | NULL | NULL      |               1 |
+| 20 | TV0116 | Televisi 23 inc   |    3500000 |   50500000 |    5 |        2 | NULL | NULL      |               1 |
+| 21 | TV0117 | Televisi 24 inc   |    3500000 |   50500000 |    5 |        2 | NULL | NULL      |               1 |
+| 22 | TV0118 | Televisi 25 inc   |    3500000 |   50500000 |    5 |        2 | NULL | NULL      |               1 |
+| 24 | TV0120 | Televisi 27 inc   |    3500000 |   50500000 |    5 |        2 | NULL | NULL      |               1 |
+| 25 | TV0121 | Televisi 28 inc   |    3500000 |   50500000 |    5 |        2 | NULL | NULL      |               1 |
+| 26 | TV0122 | Televisi 29 inc   |    3500000 |   50500000 |    5 |        2 | NULL | NULL      |               1 |
++----+--------+-------------------+------------+------------+------+----------+------+-----------+-----------------+
+8 rows in set (0.052 sec)
+
+MariaDB [db_posmsib6]> select p.id, p.nama as nama_pelanggan, k.nama as
+kartu, k.iuran
+    -> from pelanggan p
+    -> inner join kartu k on p.kartu_id = k.id
+    -> where k.iuran > 90000;
++----+--------------------+---------------+--------+
+| id | nama_pelanggan     | kartu         | iuran  |
++----+--------------------+---------------+--------+
+|  1 | Agung Sedayu Group | Gold Utama    | 100000 |
+|  2 | Pandan Wangi       | Platinum Jaya | 150000 |
+|  3 | Sekar Mirah        | Gold Utama    | 100000 |
+|  5 | Pradabashu         | Platinum Jaya | 150000 |
+|  6 | Gayatri Dwi        | Gold Utama    | 100000 |
+|  7 | Dewi Gyat          | Gold Utama    | 100000 |
+| 10 | Cassanndra         | Gold Utama    | 100000 |
+| 11 | Andi Wijaya        | Platinum Jaya | 150000 |
++----+--------------------+---------------+--------+
+8 rows in set (0.002 sec)
+
+
+MariaDB [db_posmsib6]> SELECT * from produk WHERE harga_jual < (SELECT A
+VG(harga_jual) from pelanggan);
+Empty set (0.002 sec)
+
+MariaDB [db_posmsib6]> select p.id, p.nama as nama_pelanggan, k.nama as
+kartu, k.diskon
+    -> from pelanggan p
+    -> inner join kartu k on p.kartu_id = k.id
+    -> where diskon > 0.03;
++----+--------------------+---------------+--------+
+| id | nama_pelanggan     | kartu         | diskon |
++----+--------------------+---------------+--------+
+|  1 | Agung Sedayu Group | Gold Utama    |   0.05 |
+|  2 | Pandan Wangi       | Platinum Jaya |    0.1 |
+|  3 | Sekar Mirah        | Gold Utama    |   0.05 |
+|  5 | Pradabashu         | Platinum Jaya |    0.1 |
+|  6 | Gayatri Dwi        | Gold Utama    |   0.05 |
+|  7 | Dewi Gyat          | Gold Utama    |   0.05 |
+| 10 | Cassanndra         | Gold Utama    |   0.05 |
+| 11 | Andi Wijaya        | Platinum Jaya |    0.1 |
++----+--------------------+---------------+--------+
+8 rows in set (0.005 sec)
