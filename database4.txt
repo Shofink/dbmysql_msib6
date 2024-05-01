@@ -1,0 +1,322 @@
+// SOAL 6.1 //
+
+NO.1
+MariaDB [db_posmsib6]> DELIMITER $$
+MariaDB [db_posmsib6]> CREATE PROCEDURE pro_naikan_harga(
+    -> IN jenis_produk INT,
+    -> IN presentasi_kenaikan INT)
+    -> BEGIN
+    -> UPDATE produk SET harga_jual = harga_jual + (harga_jual *
+    -> presentasi_kenaikan / 100)
+    -> WHERE jenis_produk_id = jenis_produk;
+    -> END $$
+Query OK, 0 rows affected (0.019 sec)
+
+MariaDB [db_posmsib6]> DELIMITER ;
+
+MariaDB [db_posmsib6]> CALL pro_naikan_harga(4, 10);
+Query OK, 5 rows affected (0.016 sec)
+
+MariaDB [db_posmsib6]> SELECT nama, harga_jual, jenis_produk_id from produk;
++-------------------+------------+-----------------+
+| nama              | harga_jual | jenis_produk_id |
++-------------------+------------+-----------------+
+| Televisi 21 inchs |   50500000 |               1 |
+| Televisi 40 inch  |    7440000 |               1 |
+| Kulkas 2 pintu    |    4680000 |               1 |
+| Meja Makan        |     600000 |               2 |
+| Teh Kotak         |       3850 |               4 |
+| PC Desktop HP     |    9984000 |               5 |
+| Teh Botol         |       2750 |               4 |
+| Notebook Acer S   |   11232000 |               5 |
+| Notebook Lenovo   |   12480000 |               5 |
+| Laptop Lenovo     |   16000000 |               1 |
+| Kopi              |      33000 |               4 |
+| Teh Sosro 2       |      15000 |               1 |
+| Laptop Asus       |    5000000 |               1 |
+| Televisi 22 inc`  |   50500000 |               1 |
+| Televisi 23 inc   |   50500000 |               1 |
+| Televisi 24 inc   |   50500000 |               1 |
+| Televisi 25 inc   |   50500000 |               1 |
+| Televisi 27 inc   |   50500000 |               1 |
+| Televisi 28 inc   |   50500000 |               1 |
+| Televisi 29 inc   |   50500000 |               1 |
+| Teh Pucuk         |       5500 |               4 |
+| Teh Pucuk2        |       5500 |               4 |
+| Laptop Samsung    |          0 |               1 |
+| Silver Queen      |          0 |               6 |
+| Tango             |          0 |               6 |
+| AC Panasonic      |          0 |               1 |
++-------------------+------------+-----------------+
+26 rows in set (0.001 sec)
+
+
+NO.2
+MariaDB [db_posmsib6]> DELIMITER $$
+MariaDB [db_posmsib6]> CREATE FUNCTION umur1(tgl_lahir DATE)
+    -> RETURNS INT
+    -> BEGIN
+    -> DECLARE umur INT;
+    -> SET umur = YEAR(CURDATE()) - YEAR(tgl_lahir);
+    -> RETURN umur;
+    -> END $$
+Query OK, 0 rows affected (0.070 sec)
+
+MariaDB [db_posmsib6]> DELIMITER ;
+MariaDB [db_posmsib6]> SELECT nama, umur1(tgl_lahir) AS umur from pelang
+gan;
++--------------------+------+
+| nama               | umur |
++--------------------+------+
+| Agung Sedayu Group |   14 |
+| Pandan Wangi       |   74 |
+| Sekar Mirah        |   41 |
+| Swandaru Geni      |   43 |
+| Pradabashu         |   39 |
+| Gayatri Dwi        |   37 |
+| Dewi Gyat          |   36 |
+| Andre Haru         |   34 |
+| Ahmad Hasan        |   32 |
+| Cassanndra         |   34 |
+| Andi Wijaya        |    1 |
+| Ira                |    1 |
++--------------------+------+
+12 rows in set (0.013 sec)
+
+
+NO.3
+MariaDB [db_posmsib6]> DELIMITER $$
+MariaDB [db_posmsib6]> CREATE FUNCTION kategori_harga(harga DOUBLE)
+    -> RETURNS VARCHAR(20)
+    -> BEGIN
+    -> DECLARE kategori VARCHAR(20);
+    -> IF harga <= 500000 THEN
+    -> SET kategori = 'murah';
+    -> ELSEIF harga <= 3000000 THEN
+    -> SET kategori = 'sedang';
+    -> ELSEIF harga <= 10000000 THEN
+    -> SET kategori = 'mahal';
+    -> ELSE
+    -> SET kategori = 'sangat mahal';
+    -> END IF;
+    -> RETURN kategori;
+    -> END $$
+Query OK, 0 rows affected (0.014 sec)
+
+MariaDB [db_posmsib6]> DELIMITER ;
+MariaDB [db_posmsib6]> SELECT nama, kategori_harga(harga_jual) AS kategori from produk;
++-------------------+--------------+
+| nama              | kategori     |
++-------------------+--------------+
+| Televisi 21 inchs | sangat mahal |
+| Televisi 40 inch  | mahal        |
+| Kulkas 2 pintu    | mahal        |
+| Meja Makan        | sedang       |
+| Teh Kotak         | murah        |
+| PC Desktop HP     | mahal        |
+| Teh Botol         | murah        |
+| Notebook Acer S   | sangat mahal |
+| Notebook Lenovo   | sangat mahal |
+| Laptop Lenovo     | sangat mahal |
+| Kopi              | murah        |
+| Teh Sosro 2       | murah        |
+| Laptop Asus       | mahal        |
+| Televisi 22 inc`  | sangat mahal |
+| Televisi 23 inc   | sangat mahal |
+| Televisi 24 inc   | sangat mahal |
+| Televisi 25 inc   | sangat mahal |
+| Televisi 27 inc   | sangat mahal |
+| Televisi 28 inc   | sangat mahal |
+| Televisi 29 inc   | sangat mahal |
+| Teh Pucuk         | murah        |
+| Teh Pucuk2        | murah        |
+| Laptop Samsung    | murah        |
+| Silver Queen      | murah        |
+| Tango             | murah        |
+| AC Panasonic      | murah        |
++-------------------+--------------+
+26 rows in set (0.058 sec)
+
+
+// SOAL 6.2 // 
+NO.1
+MariaDB [db_posmsib6]> SELECT * FROM pesanan;
++----+------------+---------+--------------+
+| id | tanggal    | total   | pelanggan_id |
++----+------------+---------+--------------+
+|  1 | 2015-11-04 | 9720000 |            1 |
+|  2 | 2015-11-04 |   17500 |            3 |
+|  3 | 2015-11-04 |       0 |            6 |
+|  4 | 2015-11-04 |       0 |            7 |
+|  5 | 2015-11-04 |       0 |           10 |
+|  6 | 2015-11-04 |       0 |            2 |
+|  7 | 2015-11-04 |       0 |            5 |
+|  8 | 2015-11-04 |       0 |            4 |
+|  9 | 2015-11-04 |       0 |            8 |
+| 10 | 2015-11-04 |       0 |            9 |
+| 11 | 2015-11-04 |   30000 |            9 |
+| 12 | 2020-11-04 |   40000 |            9 |
++----+------------+---------+--------------+
+12 rows in set (0.058 sec)
+
+MariaDB [db_posmsib6]> DELIMITER $$
+MariaDB [db_posmsib6]> CREATE TRIGGER cek_pembayaran BEFORE INSERT ON pembayaran
+    -> FOR EACH ROW
+    -> BEGIN
+    -> DECLARE total_bayar DECIMAL(10, 2);
+    -> DECLARE total_pesanan DECIMAL(10, 2);
+    -> SELECT SUM(jumlah) INTO total_bayar FROM pembayaran WHERE pesanan_id = NEW.pesanan_id;
+    -> SELECT total INTO total_pesanan FROM pesanan WHERE id = NEW.pesanan_id;
+    -> IF total_bayar + NEW.jumlah >= total_pesanan THEN
+    -> SET NEW.status_pembayaran = 'Lunas';
+    -> END IF;
+    -> END $$
+Query OK, 0 rows affected (0.099 sec)
+
+MariaDB [db_posmsib6]> DELIMITER ;
+MariaDB [db_posmsib6]> INSERT INTO pembayaran(nokuitansi, tanggal, jumlah,
+    -> ke, pesanan_id)
+    -> VALUES ('MD0202', '2022-11-04', 45000, 1, 12);
+Query OK, 1 row affected (0.092 sec)
+
+N0.2
+MariaDB [db_posmsib6]> DELIMITER $$
+MariaDB [db_posmsib6]> CREATE PROCEDURE kurangi_stok(IN produk_id INT, IN jumlah_pesanan INT)
+    -> BEGIN
+    -> DECLARE stok_produk INT;
+    -> SELECT stok INTO stok_produk FROM produk WHERE id = produk_id;
+    -> SET stok_produk = stok_produk - jumlah_pesanan;
+    -> IF stok_produk < 0 THEN
+    -> SIGNAL SQLSTATE '45000'
+    -> SET MESSAGE_TEXT = 'Stok produk tidak mencukupi';
+    -> END IF;
+    -> UPDATE produk SET stok = stok_produk WHERE id = produk_id;
+    -> END $$
+Query OK, 0 rows affected (0.071 sec)
+
+MariaDB [db_posmsib6]> DELIMITER ;
+
+
+NO.3
+MariaDB [db_posmsib6]> DELIMITER $$
+MariaDB [db_posmsib6]> CREATE TRIGGER trig_kurangi_stok AFTER INSERT ON pesanan_items
+    -> FOR EACH ROW
+    -> BEGIN
+    -> CALL kurangi_stok(NEW.produk_id, NEW.qty);
+    -> END $$
+Query OK, 0 rows affected (0.074 sec)
+
+MariaDB [db_posmsib6]> DELIMITER ;
+MariaDB [db_posmsib6]> INSERT INTO pesanan_items (produk_id, pesanan_id, qty, harga) VALUES
+    -> (7, 3, 2, 7000);
+Query OK, 1 row affected (0.020 sec)
+
+MariaDB [db_posmsib6]> SELECT * FROM produk;
++----+--------+-------------------+------------+------------+------+----------+------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
+| id | kode   | nama              | harga_beli | harga_jual | stok | min_stok | foto                   | deskripsi
+
+
+                             | jenis_produk_id |
++----+--------+-------------------+------------+------------+------+----------+------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
+|  1 | TV01   | Televisi 21 inchs |    3500000 |   50500000 |    5 |        2 |                        | NULL
+
+
+                             |               1 |
+|  2 | TV02   | Televisi 40 inch  |    5500000 |    7440000 |    4 |        2 | NULL                   | NULL
+
+
+                             |               1 |
+|  3 | K001   | Kulkas 2 pintu    |    3500000 |    4680000 |    6 |        2 |                        | NULL
+
+
+                             |               1 |
+|  4 | M001   | Meja Makan        |     500000 |     600000 |    4 |        3 | NULL                   | NULL
+
+
+                             |               2 |
+|  5 | TK01   | Teh Kotak         |       3000 |       3850 |    6 |       10 | foto-5.png             | NULL
+
+
+                             |               4 |
+|  6 | PC01   | PC Desktop HP     |    7000000 |    9984000 |    9 |        2 | NULL                   | NULL
+
+
+                             |               5 |
+|  7 | TB01   | Teh Botol         |       2000 |       2750 |   51 |       10 | foto-7.jpg             | NULL
+
+
+                             |               4 |
+|  8 | AC01   | Notebook Acer S   |    8000000 |   11232000 |    7 |        2 | NULL                   | NULL
+
+
+                             |               5 |
+|  9 | LN01   | Notebook Lenovo   |    9000000 |   12480000 |    9 |        2 | NULL                   | NULL
+
+
+                             |               5 |
+| 11 | L005   | Laptop Lenovo     |   13000000 |   16000000 |    5 |        2 |                        | NULL
+
+                             |               1 |
+| 15 | L112   | Kopi              |      20000 |      33000 |   10 |       15 | foto-15.png            | Luwak White Coffee merupakan bubuk biji kopi luwak yang dikombinasikan dengan gurihnya krimer serta manisnya gula. Keharuman kopi serta rasa manisnya yang pas juga membuat popularitas Luwak White Coffee melejit. |               4 |
+| 16 | L113   | Teh Sosro 2       |      10000 |      15000 |   10 |       12 | .png                   | NULL
+
+
+                             |               1 |
+| 18 | L0015  | Laptop Asus       |    3000000 |    5000000 |   10 |       20 | foto-65542ffa66604.jpg | NULL
+
+
+                             |               1 |
+| 19 | TV0115 | Televisi 22 inc`  |    3500000 |   50500000 |    5 |        2 | NULL                   | NULL
+
+
+                             |               1 |
+| 20 | TV0116 | Televisi 23 inc   |    3500000 |   50500000 |    5 |        2 | NULL                   | NULL
+
+
+                             |               1 |
+| 21 | TV0117 | Televisi 24 inc   |    3500000 |   50500000 |    5 |        2 | NULL                   | NULL
+
+
+                             |               1 |
+| 22 | TV0118 | Televisi 25 inc   |    3500000 |   50500000 |    5 |        2 | NULL                   | NULL
+
+
+                             |               1 |
+| 24 | TV0120 | Televisi 27 inc   |    3500000 |   50500000 |    5 |        2 | NULL                   | NULL
+
+
+                             |               1 |
+| 25 | TV0121 | Televisi 28 inc   |    3500000 |   50500000 |    5 |        2 | NULL                   | NULL
+
+
+                             |               1 |
+| 26 | TV0122 | Televisi 29 inc   |    3500000 |   50500000 |    5 |        2 | NULL                   | NULL
+
+
+                             |               1 |
+| 27 | THP001 | Teh Pucuk         |       4000 |       5500 |   10 |        2 | pucuk.jpg              | Teh pucuk adalah
+
+
+                             |               4 |
+| 28 | THP002 | Teh Pucuk2        |       4000 |       5500 |   10 |        2 | pucuk.jpg              | Teh pucuk adalah
+
+
+                             |               4 |
+| 38 |        | Laptop Samsung    |          0 |          0 |   10 |        0 | NULL                   | NULL
+
+
+                             |               1 |
+| 49 | SQ01   | Silver Queen      |          0 |          0 |  100 |        0 | NULL                   | NULL
+
+
+                             |               6 |
+| 50 | TG01   | Tango             |          0 |          0 |   10 |        0 | NULL                   | NULL
+
+
+                             |               6 |
+| 51 | ACP01  | AC Panasonic      |          0 |          0 |   50 |        0 | NULL                   | NULL
+
+
+                             |               1 |
++----+--------+-------------------+------------+------------+------+----------+------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
+26 rows in set (0.001 sec)
